@@ -1,6 +1,6 @@
 # Noto CJK Font
 
-This package contains a pre-built CJK font [`NotoSerifCJK-Light.ttf`](NotoSerifCJK-Light.ttf). You can use this font to display the common Traditional Chinese, Simplified Chinese and Japanese characters with only one font file. This is particularly useful for Kobo e-readers.
+This package contains a pre-built CJK font [`NotoSerifCJK-Light.ttf`](NotoSerifCJK-Light.ttf). You can use this font to display the common Traditional Chinese, Simplified Chinese and Japanese characters with only one font file. This is particularly useful for Kobo e-readers because its font fallback mechanism is not very good.
 
 Any missing characters can be reported to us ;-)
 
