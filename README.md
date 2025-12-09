@@ -1,10 +1,10 @@
 # Noto CJK Font
 
-This package contains a pre-built CJK font [`NotoSerifCJK-Light.ttf`](NotoSerifCJK-Light.ttf). You can use this font to display the common Chinese, Japanese, and Korean characters with only one font file. This is particularly useful for Kobo e-readers.
+This package contains a pre-built CJK font [`NotoSerifCJK-Light.ttf`](NotoSerifCJK-Light.ttf). You can use this font to display the common Traditional Chinese, Simplified Chinese and Japanese characters with only one font file. This is particularly useful for Kobo e-readers.
 
-Please report any missing characters to us ;-)
+Any missing characters can be reported to us ;-)
 
-In addition, this package also contains a tool which can be used to produce the CJK font file that contains the common Chinese, Japanese, and Korean characters. You can use this tool to produce Sans Serif CJK font if you want.
+In addition, this package also contains a tool which can be used to produce the above CJK font file. You can use this tool to produce Sans Serif CJK font.
 
 # Font Installation
 
