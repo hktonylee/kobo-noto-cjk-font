@@ -122,13 +122,22 @@ def set_font_name(font_path, family_name, subfamily="Regular"):
     if not version_string:
         version_string = f"Version {font['head'].fontRevision:.3f}"
 
-    # Name IDs: 1=Family, 2=Subfamily, 3=Unique ID, 4=Full Name, 6=PostScript Name
+    # Name IDs:
+    #   1=Family
+    #   2=Subfamily
+    #   3=Unique ID
+    #   4=Full Name
+    #   6=PostScript Name
+    #   16=Typographic Family
+    #   17=Typographic Subfamily
     name_records = {
         1: family_record,
         2: subfamily,
         3: f"{version_string};{ps_name}",
         4: full_name,
         6: ps_name,
+        16: family_record,
+        17: subfamily,
     }
     
     # Update existing records for all platforms/encodings
