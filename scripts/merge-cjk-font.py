@@ -235,6 +235,8 @@ def main():
                     help="Tables to drop from the output font. For Noto, drop vhea and vmtx")
 
     ap.add_argument("--out", default="merged_common.ttf")
+    ap.add_argument("--out-name", default="Noto Serif CJK", help="Family name of the output font.")
+    ap.add_argument("--out-subfamily", default="Light", help="Subfamily name of the output font.")
 
     ap.add_argument("--prefer-order", default=None,
                     help=("Priority tags. Use 'latin' to refer to all Latin inputs. "
@@ -309,7 +311,7 @@ def main():
             print(f"{tag}: assigned {len(keep)} codepoints")
 
         run_pyftmerge(subset_paths, args.out)
-        set_font_name(args.out, "Noto Serif CJK", "Light")
+        set_font_name(args.out, args.out_name, args.out_subfamily)
 
         glyphs = count_glyphs(args.out)
         print(f"Unassigned target codepoints (no font had them): {unassigned}")
