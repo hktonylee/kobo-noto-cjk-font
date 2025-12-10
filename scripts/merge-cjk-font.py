@@ -106,14 +106,27 @@ def set_font_name(font_path, family_name, subfamily="Regular"):
     """Update font name table entries."""
     font = TTFont(font_path)
     name_table = font["name"]
-    
-    full_name = f"{family_name} {subfamily}" if subfamily != "Regular" else family_name
+
+    family_record = f"{family_name} {subfamily}" if subfamily == "Regular" else family_name
+    full_name = f"{family_name} {subfamily}"
     ps_name = full_name.replace(" ", "")
-    
-    # Name IDs: 1=Family, 2=Subfamily, 4=Full Name, 6=PostScript Name
+
+    version_string = None
+    for record in name_table.names:
+        if record.nameID == 5:  # Version string
+            try:
+                version_string = record.toUnicode()
+                break
+            except Exception:
+                pass
+    if not version_string:
+        version_string = f"Version {font['head'].fontRevision:.3f}"
+
+    # Name IDs: 1=Family, 2=Subfamily, 3=Unique ID, 4=Full Name, 6=PostScript Name
     name_records = {
-        1: family_name,
+        1: family_record,
         2: subfamily,
+        3: f"{version_string};{ps_name}",
         4: full_name,
         6: ps_name,
     }
