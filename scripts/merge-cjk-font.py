@@ -102,6 +102,34 @@ def count_glyphs(font_path):
     f.close()
     return n
 
+def set_font_name(font_path, family_name, subfamily="Regular"):
+    """Update font name table entries."""
+    font = TTFont(font_path)
+    name_table = font["name"]
+    
+    full_name = f"{family_name} {subfamily}" if subfamily != "Regular" else family_name
+    ps_name = full_name.replace(" ", "")
+    
+    # Name IDs: 1=Family, 2=Subfamily, 4=Full Name, 6=PostScript Name
+    name_records = {
+        1: family_name,
+        2: subfamily,
+        4: full_name,
+        6: ps_name,
+    }
+    
+    # Update existing records for all platforms/encodings
+    for record in name_table.names:
+        if record.nameID in name_records:
+            try:
+                record.string = name_records[record.nameID]
+            except Exception:
+                pass
+    
+    font.save(font_path)
+    font.close()
+    print(f"Font renamed to: {full_name}")
+
 def expand_prefer_order(tokens, latin_tags):
     expanded = []
     for t in tokens:
@@ -281,6 +309,7 @@ def main():
             print(f"{tag}: assigned {len(keep)} codepoints")
 
         run_pyftmerge(subset_paths, args.out)
+        set_font_name(args.out, "Noto Serif CJK", "Light")
 
         glyphs = count_glyphs(args.out)
         print(f"Unassigned target codepoints (no font had them): {unassigned}")
