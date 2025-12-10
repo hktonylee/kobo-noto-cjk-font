@@ -107,6 +107,18 @@ def set_font_name(font_path, family_name, subfamily="Regular"):
     font = TTFont(font_path)
     name_table = font["name"]
 
+    # Try to capture the original family name before mutating records so we can
+    # update variable font specific name IDs that reference it.
+    original_family = None
+    for record in name_table.names:
+        if record.nameID == 1:
+            try:
+                original_family = record.toUnicode()
+                if original_family:
+                    break
+            except Exception:
+                pass
+
     family_record = f"{family_name} {subfamily}" if subfamily == "Regular" else family_name
     full_name = f"{family_name} {subfamily}"
     ps_name = full_name.replace(" ", "")
@@ -142,7 +154,13 @@ def set_font_name(font_path, family_name, subfamily="Regular"):
         17: subfamily,
         25: variation_ps_prefix,
     }
-    
+
+    axis_name_ids = set()
+    if "fvar" in font:
+        for axis in font["fvar"].axes:
+            if axis.axisNameID is not None:
+                axis_name_ids.add(axis.axisNameID)
+
     # Update existing records for all platforms/encodings
     for record in name_table.names:
         if record.nameID in name_records:
@@ -150,7 +168,15 @@ def set_font_name(font_path, family_name, subfamily="Regular"):
                 record.string = name_records[record.nameID]
             except Exception:
                 pass
-    
+        elif record.nameID >= 256 and record.nameID in axis_name_ids:
+            try:
+                record_text = record.toUnicode()
+            except Exception:
+                record_text = None
+
+            if record_text and original_family and original_family in record_text:
+                record.string = record_text.replace(original_family, family_name)
+
     font.save(font_path)
     font.close()
     print(f"Font renamed to: {full_name}")
