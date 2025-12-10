@@ -110,6 +110,7 @@ def set_font_name(font_path, family_name, subfamily="Regular"):
     family_record = f"{family_name} {subfamily}" if subfamily == "Regular" else family_name
     full_name = f"{family_name} {subfamily}"
     ps_name = full_name.replace(" ", "")
+    variation_ps_prefix = ps_name[:63]
 
     version_string = None
     for record in name_table.names:
@@ -130,6 +131,7 @@ def set_font_name(font_path, family_name, subfamily="Regular"):
     #   6=PostScript Name
     #   16=Typographic Family
     #   17=Typographic Subfamily
+    #   25=Variations PostScript Name Prefix
     name_records = {
         1: family_record,
         2: subfamily,
@@ -138,6 +140,7 @@ def set_font_name(font_path, family_name, subfamily="Regular"):
         6: ps_name,
         16: family_record,
         17: subfamily,
+        25: variation_ps_prefix,
     }
     
     # Update existing records for all platforms/encodings
